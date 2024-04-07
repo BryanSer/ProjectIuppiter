@@ -1,0 +1,15 @@
+pluginManagement {
+    plugins {
+        id 'org.jetbrains.kotlin.jvm' version '1.9.23'
+    }
+}
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.5.0'
+}
+rootProject.name = 'ProjectIuppiter'
+include 'DungeonPoint'
+include 'common:database'
+findProject(':common:database')?.name = 'database'
+include 'common:coroutines'
+findProject(':common:coroutines')?.name = 'coroutines'
+

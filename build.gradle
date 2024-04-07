@@ -1,0 +1,16 @@
+
+allprojects{
+    repositories{
+        mavenCentral()
+        mavenLocal()
+        maven {
+            name = "spigotmc-repo"
+            url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/groups/public/"
+        }
+
+    }
+}
