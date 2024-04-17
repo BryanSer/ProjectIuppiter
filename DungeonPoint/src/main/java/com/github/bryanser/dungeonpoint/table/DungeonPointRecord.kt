@@ -10,5 +10,7 @@ interface DungeonPointRecord : Entity<DungeonPointRecord> {
     var dungeonName:String
     var point:Int
 
+    val dungeonInfo:DungeonInfo
+
 
 }

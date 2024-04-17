@@ -22,8 +22,11 @@ import java.util.UUID
 
 object DungeonPointRecordTable : Table<DungeonPointRecord>("dungeon_point_record") {
     val playerUUID = uuid("playerUUID").bindTo { it.playerUUID }.primaryKey()
-    val dungeonName = varchar("dungeonName").bindTo { it.dungeonName }.primaryKey()
-    val point = int("point").bindTo { it.point }
+    val dungeonName = varchar("dungeonName")
+        .bindTo { it.dungeonName }
+        .primaryKey()
+
+    val point = int("point").bindTo { it.point }.references(DungeonInfoTable) { it.dungeonInfo }
 
 
     suspend fun queryPlayerPointRecord(
