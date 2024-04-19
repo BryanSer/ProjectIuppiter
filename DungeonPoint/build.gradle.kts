@@ -18,6 +18,7 @@ dependencies {
     compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":common:database"))
     implementation(project(":common:coroutines"))
+    compileOnly("net.luckperms:api:5.4")
 }
 
 tasks {

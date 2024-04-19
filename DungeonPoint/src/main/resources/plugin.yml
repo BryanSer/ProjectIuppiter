@@ -1,14 +1,16 @@
 name: DungeonPoint
 version: '${version}'
 main: com.github.bryanser.dungeonpoint.Main
-depend: [BrAPI,CustomGo]
+depend: [BrAPI,CustomGo,LuckPerms]
 authors: [Bryan33]
 website: https://github.com/BryanSer
 commands:
   DungeonPoint:
     aliases: [dp,dunp,dpoint]
     usage: |
-      /<command> clear [x-x] (player) >> 标记玩家通过某个难度,如果不输入玩家名则默认是自己
-      /<command> point [分数] [key] (player) >> 为目标玩家所在的副本添加或减少分数,key是用于去重的
-        key填写_则可以忽略去重
-      /<command> max [分数] [x-x] (player) >> 为目标玩家所在的副本设定通关目标,可以随时更新
+      §6/<command> point [副本] [分数] [key] (player) >> 为目标玩家所在的副本队伍添加或减少分数,key是用于去重的
+      §6  key填写_则可以忽略去重
+      §6/<command> info [副本] >> 查询某个副本目前配置的信息
+      §6/<command> max [副本] [分数] >> 设定某个副本的通关分数,会储存在数据库中,全服务器通用
+      §6/<command> permission add [副本] [权限] >> 为某个副本添加通关权限, 注意 如果你没有先调用过max,那么副本的分数会被设定为1000
+      §6/<command> permission remove [副本] [权限] >> 为某个副本移除通关权限

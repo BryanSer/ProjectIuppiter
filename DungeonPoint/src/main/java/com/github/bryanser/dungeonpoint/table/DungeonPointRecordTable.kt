@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.bukkit.Bukkit
+import org.intellij.lang.annotations.Language
 import org.ktorm.dsl.*
 import org.ktorm.dsl.from
 import org.ktorm.dsl.select
@@ -25,9 +26,20 @@ object DungeonPointRecordTable : Table<DungeonPointRecord>("dungeon_point_record
     val dungeonName = varchar("dungeonName")
         .bindTo { it.dungeonName }
         .primaryKey()
+        .references(DungeonInfoTable) { it.dungeonInfo }
 
-    val point = int("point").bindTo { it.point }.references(DungeonInfoTable) { it.dungeonInfo }
+    val point = int("point").bindTo { it.point }
 
+    @Language("MySQL")
+    const val TABLE_CREATE = """
+        CREATE TABLE IF NOT EXISTS dungeon_point_record (
+            playerUUID VARCHAR(64),
+            dungeonName VARCHAR(255)  ,
+            point INT,
+            PRIMARY KEY (playerUUID, dungeonName),
+            FOREIGN KEY (dungeonName) REFERENCES dungeon_info(dungeonName)
+        )
+    """
 
     suspend fun queryPlayerPointRecord(
         uuid: UUID,
