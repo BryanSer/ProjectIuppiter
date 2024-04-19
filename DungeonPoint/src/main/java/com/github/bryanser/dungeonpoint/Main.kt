@@ -5,7 +5,9 @@ import com.github.bryanser.common.coroutines.launchOnIO
 import com.github.bryanser.common.database.initDatabase
 import com.github.bryanser.dungeonpoint.table.*
 import fw.group.Group
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.actor
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.withContext
 import net.luckperms.api.LuckPerms
@@ -138,7 +140,7 @@ class Main : JavaPlugin() {
             }
             val playerList = group.playerList
             launchOnIO {
-                val dungeonInfo = DungeonInfoTable.queryDungeonInfo(name)
+                val dungeonInfo = DungeonInfoTable.queryDungeonInfo(dunName)
                 if(dungeonInfo == null){
                     sender.sendMessage("§c当前副本没有设定过任何积分配置 无法获得积分")
                     return@launchOnIO
