@@ -11,10 +11,9 @@ import kotlin.coroutines.CoroutineContext
 class BukkitCoroutineDispatcher(
     private val plugin:Plugin
 ) : CoroutineDispatcher() {
-    private val mainThread: Thread = Thread.currentThread()
 
     override fun isDispatchNeeded(context: CoroutineContext): Boolean {
-        return Thread.currentThread() != mainThread
+        return !plugin.server.isPrimaryThread
     }
     override fun dispatch(context: CoroutineContext, block: Runnable) {
         plugin.server.scheduler.runTask(plugin, block)

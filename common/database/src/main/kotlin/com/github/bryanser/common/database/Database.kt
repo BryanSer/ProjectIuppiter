@@ -11,6 +11,7 @@ import org.ktorm.database.Database
 import org.ktorm.schema.BaseTable
 import org.ktorm.schema.Column
 import org.ktorm.schema.SqlType
+import org.ktorm.support.mysql.MySqlDialect
 import java.io.File
 import java.sql.PreparedStatement
 import java.sql.ResultSet
@@ -53,7 +54,7 @@ fun initDatabase(plugin: Plugin) {
     config.validationTimeout = 3000
     config.maxLifetime = 60000
     val source = HikariDataSource(config)
-    database = Database.connect(source)
+    database = Database.connect(source, dialect = MySqlDialect())
 }
 
 fun <E : Any> BaseTable<E>.uuid(name: String): Column<UUID> = registerColumn(name, UUIDSQLType)

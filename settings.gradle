@@ -8,6 +8,7 @@ plugins {
 }
 rootProject.name = 'ProjectIuppiter'
 include 'DungeonPoint'
+include 'IuppiterCommonRuntime'
 include 'common:database'
 findProject(':common:database')?.name = 'database'
 include 'common:coroutines'

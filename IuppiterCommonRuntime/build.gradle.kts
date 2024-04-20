@@ -15,10 +15,8 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT")
     // https://mvnrepository.com/artifact/com.github.bryanser/BrAPI
     compileOnly("com.github.bryanser:BrAPI:Kt-1.1.1")
-    compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    compileOnly(project(":common:database"))
-    compileOnly(project(":common:coroutines"))
-    compileOnly("net.luckperms:api:5.4")
+    implementation(project(":common:database"))
+    implementation(project(":common:coroutines"))
 }
 
 tasks {

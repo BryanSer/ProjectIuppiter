@@ -1,0 +1,4 @@
+name: IuppiterCommonRuntime
+version: '${version}'
+main: com.github.bryanser.runtime.Main
+depend: [ BrAPI ]

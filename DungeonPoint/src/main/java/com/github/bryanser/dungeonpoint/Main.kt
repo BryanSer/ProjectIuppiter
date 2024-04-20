@@ -5,11 +5,8 @@ import com.github.bryanser.common.coroutines.launchOnIO
 import com.github.bryanser.common.database.initDatabase
 import com.github.bryanser.dungeonpoint.table.*
 import fw.group.Group
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.actor
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.withContext
 import net.luckperms.api.LuckPerms
 import net.luckperms.api.node.Node
 import org.bukkit.Bukkit
@@ -17,6 +14,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
+import kotlin.coroutines.coroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -85,6 +83,7 @@ class Main : JavaPlugin() {
                     this.maxPoint = point
                     permissions = emptyList()
                 }
+                dungeonInfo.maxPoint = point
                 DungeonInfoTable.updatePlayerPointRecord(dungeonInfo)
                 sender.sendMessage("§6设定更新完毕")
             }
@@ -138,7 +137,7 @@ class Main : JavaPlugin() {
                 sender.sendMessage("§c目标玩家: ${player.name}不在任何副本中")
                 return true
             }
-            val playerList = group.playerList
+            val playerList = group.playerList.toList()
             launchOnIO {
                 val dungeonInfo = DungeonInfoTable.queryDungeonInfo(dunName)
                 if(dungeonInfo == null){
@@ -148,12 +147,14 @@ class Main : JavaPlugin() {
                 playerList.map{ p ->
                     launchOnIO {
                         val uuid = p.uniqueId
-                        if(DungeonKeyTable.queryPlayerKeyExists(
+                        if(!key.equals("_", true) &&DungeonKeyTable.queryPlayerKeyExists(
                                 uuid, dunName, key
                             )){
                             return@launchOnIO
                         }
-                        DungeonKeyTable.addPlayerKey(uuid,dunName, key)
+                        if(!key.equals("_", true) ) {
+                            DungeonKeyTable.addPlayerKey(uuid,dunName, key)
+                        }
                         val currentPoint = DungeonPointRecordTable.queryPlayerPointRecord(
                             uuid, dunName
                         )
@@ -163,18 +164,17 @@ class Main : JavaPlugin() {
                         p.sendMessage("§6任务完成获得${point}积分,当前总积分: ${currentPoint + point}")
                         if(currentPoint + point >= dungeonInfo.maxPoint && currentPoint < dungeonInfo.maxPoint){
                             p.sendMessage("§6当前副本已通关")
-                            launchOnIO {
-                                suspendCoroutine<Unit> {
-                                    permissionAPI?.userManager?.modifyUser(uuid){
-                                        for(permission in dungeonInfo.permissions){
-                                            it.data().add(
-                                                Node.builder(permission).build()
-                                            )
-                                        }
-                                    }?.join()
-                                    it.resume(Unit)
+                            launch(BukkitDispatchers.mainDispatcher){
+                                for(permission in dungeonInfo.permissions){
+                                    Bukkit.getConsoleSender().sendMessage("执行命令: \"lp user ${p.name} permission set $permission\"")
+                                    Bukkit.dispatchCommand(
+                                        Bukkit.getConsoleSender(),
+                                        "lp user ${p.name} permission set $permission"
+                                    )
                                 }
                             }
+
+
                         }
                     }
                 }.joinAll()

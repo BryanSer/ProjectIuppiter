@@ -19,7 +19,8 @@ object BukkitDispatchers {
 
 inline fun launchOnIO(
     context: CoroutineContext = BukkitDispatchers.IO,
-    start: CoroutineStart = CoroutineStart.DEFAULT, crossinline block: suspend () -> Unit
+    start: CoroutineStart = CoroutineStart.DEFAULT,
+    crossinline block: suspend CoroutineScope.() -> Unit
 ):Job{
 
     return CoroutineScope(BukkitDispatchers.IO).launch(context, start) {

@@ -1,7 +1,7 @@
 name: DungeonPoint
 version: '${version}'
 main: com.github.bryanser.dungeonpoint.Main
-depend: [BrAPI,CustomGo,LuckPerms]
+depend: [BrAPI,CustomGo,LuckPerms,IuppiterCommonRuntime]
 authors: [Bryan33]
 website: https://github.com/BryanSer
 commands:
