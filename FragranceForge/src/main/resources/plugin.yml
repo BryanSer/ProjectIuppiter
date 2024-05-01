@@ -1,0 +1,6 @@
+name: FragranceForge
+version: '${version}'
+main: com.github.bryanser.fragrance.forge.Main
+depend: [BrAPI,IuppiterCommonRuntime]
+authors: [Bryan33]
+website: https://github.com/BryanSer

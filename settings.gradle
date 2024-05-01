@@ -13,4 +13,5 @@ include 'common:database'
 findProject(':common:database')?.name = 'database'
 include 'common:coroutines'
 findProject(':common:coroutines')?.name = 'coroutines'
+include 'FragranceForge'
 
