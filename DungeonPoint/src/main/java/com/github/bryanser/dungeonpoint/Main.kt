@@ -59,10 +59,10 @@ class Main : JavaPlugin() {
             launchOnIO {
                 val dungeonInfo = DungeonInfoTable.queryDungeonInfo(dun)
                 if (dungeonInfo == null) {
-                    sender.sendMessage("§c在数据库中找不到副本: $dun 的任何信息.")
+                    sender.sendMessage("§c副本: $dun 未设置或未接入数据库.")
                     return@launchOnIO
                 }
-                sender.sendMessage("§6以下是副本[$dun]的信息:")
+                sender.sendMessage("§6副本：[$dun]:")
                 sender.sendMessage("§6完成所需分数: ${dungeonInfo.maxPoint}")
                 sender.sendMessage("§6通关获得的权限(${dungeonInfo.permissions.size}条): ")
                 for (permission in dungeonInfo.permissions) {
@@ -161,7 +161,7 @@ class Main : JavaPlugin() {
                         DungeonPointRecordTable.updatePlayerPointRecord(
                             uuid, dunName, currentPoint + point
                         )
-                        p.sendMessage("§6任务完成获得${point}积分,当前总积分: ${currentPoint + point}")
+                        p.sendMessage("§6任务完成！获得${point}积分,当前总积分: ${currentPoint + point}")
                         if(currentPoint + point >= dungeonInfo.maxPoint && currentPoint < dungeonInfo.maxPoint){
                             p.sendMessage("§6当前副本已通关")
                             launch(BukkitDispatchers.mainDispatcher){
